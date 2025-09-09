@@ -1,0 +1,136 @@
+function calc3(signalName)
+    % ---------------- USER SETTINGS ----------------
+    showPlots = true;   % set true to popup figure, false otherwise
+    savePlots = true;   % set true to save png in Results folder, false otherwise
+    saveCSV   = true;   % set true to save merged CSV file
+    % ------------------------------------------------
+
+    % Folder setup
+    baseFolders = {'Temp/with_fault','Temp/without_fault'};
+    resultFolders = {'Results/with_fault','Results/without_fault'};
+    
+    % Filenames
+    matFiles = { 'HVDC_Data.mat', ...
+                 'HVDC_JFO_Data.mat', ...
+                 'HVDC_SSO_Data.mat', ...
+                 'HVDC_CFPM.mat', ...
+                 'HVDC_Data.mat', ...
+                 'HVDC_INV_Data.mat', ...
+                 'HVDC_P_Data.mat' };
+
+    % Colors for 7 files
+    colorList = lines(numel(matFiles));
+
+    % Loop through fault/without_fault
+    for fIdx = 1:numel(baseFolders)
+        baseFolder = baseFolders{fIdx};
+        resultBase = resultFolders{fIdx};
+
+        % Ensure output dirs exist
+        outRect = fullfile(resultBase,'Rectifier',signalName);
+        outInv  = fullfile(resultBase,'Inverter',signalName);
+        if ~exist(outRect,'dir'), mkdir(outRect); end
+        if ~exist(outInv,'dir'), mkdir(outInv); end
+
+        % ================== RECTIFIER ==================
+        figure('Visible', ternary(showPlots,'on','off'));
+        hold on;
+        legends = {};
+        mergedDataRect = table(); % merged table for CSV
+
+        for i = 1:numel(matFiles)
+            filePath = fullfile(baseFolder, matFiles{i});
+            if exist(filePath,'file')
+                s = load(filePath);
+                fn = fieldnames(s);
+                mainStruct = s.(fn{1}); % e.g. HVDC_Thy_Data
+
+                if isfield(mainStruct,'Rectifier') && ...
+                        isfield(mainStruct.Rectifier, signalName)
+                    ts = mainStruct.Rectifier.(signalName); % timeseries
+                    plot(ts.Time, ts.Data, 'Color', colorList(i,:), 'LineWidth', 1.5);
+                    legends{end+1} = matFiles{i};
+
+                    % Add to merged table
+                    if isempty(mergedDataRect)
+                        mergedDataRect.Time = ts.Time;
+                    end
+                    mergedDataRect.(sprintf('Data_%d', i)) = ts.Data;
+                else
+                    warning('Signal %s not found in Rectifier of %s', signalName, matFiles{i});
+                end
+            else
+                warning('File not found: %s', filePath);
+            end
+        end
+
+        title(sprintf('Rectifier - %s (%s)', signalName, strrep(baseFolder,'Temp/','')));
+        xlabel('Time'); ylabel(signalName); legend(legends,'Interpreter','none');
+        grid on; hold off;
+
+        if savePlots
+            saveas(gcf, fullfile(outRect, [signalName '_Rectifier.png']));
+        end
+        if ~showPlots
+            close(gcf);
+        end
+
+        % Save merged CSV for Rectifier
+        if saveCSV && ~isempty(mergedDataRect)
+            writetable(mergedDataRect, fullfile(outRect, [signalName '_Rectifier.csv']));
+        end
+
+        % ================== INVERTER ==================
+        figure('Visible', ternary(showPlots,'on','off'));
+        hold on;
+        legends = {};
+        mergedDataInv = table(); % merged table for CSV
+
+        for i = 1:numel(matFiles)
+            filePath = fullfile(baseFolder, matFiles{i});
+            if exist(filePath,'file')
+                s = load(filePath);
+                fn = fieldnames(s);
+                mainStruct = s.(fn{1}); % e.g. HVDC_Thy_Data
+
+                if isfield(mainStruct,'Inverter') && ...
+                        isfield(mainStruct.Inverter, signalName)
+                    ts = mainStruct.Inverter.(signalName); % timeseries
+                    plot(ts.Time, ts.Data, 'Color', colorList(i,:), 'LineWidth', 1.5);
+                    legends{end+1} = matFiles{i};
+
+                    % Add to merged table
+                    if isempty(mergedDataInv)
+                        mergedDataInv.Time = ts.Time;
+                    end
+                    mergedDataInv.(sprintf('Data_%d', i)) = ts.Data;
+                else
+                    warning('Signal %s not found in Inverter of %s', signalName, matFiles{i});
+                end
+            else
+                warning('File not found: %s', filePath);
+            end
+        end
+
+        title(sprintf('Inverter - %s (%s)', signalName, strrep(baseFolder,'Temp/','')));
+        xlabel('Time'); ylabel(signalName); legend(legends,'Interpreter','none');
+        grid on; hold off;
+
+        if savePlots
+            saveas(gcf, fullfile(outInv, [signalName '_Inverter.png']));
+        end
+        if ~showPlots
+            close(gcf);
+        end
+
+        % Save merged CSV for Inverter
+        if saveCSV && ~isempty(mergedDataInv)
+            writetable(mergedDataInv, fullfile(outInv, [signalName '_Inverter.csv']));
+        end
+    end
+end
+
+% --- Small helper ---
+function out = ternary(cond, a, b)
+    if cond, out = a; else, out = b; end
+end
