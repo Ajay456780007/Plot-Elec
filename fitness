@@ -1,0 +1,17 @@
+function [fit]=fitness(x)
+clear P_Gamma_mean;
+assignin('base', 'FA', x);
+
+FA=x;
+disp('Running Simulation...........')
+current_mod=evalin("base","current_model");
+simOut = sim(current_mod, 'SaveOutput', 'on', 'ReturnWorkspaceOutputs', 'on');
+%P_Gamma_mean = evalin('base', 'P_Gamma_mean');
+P_Vout_abc = simOut.get('P_Vout_abc');
+fit =-1* thd(P_Vout_abc.Data(:));
+disp(strcat('Fitness:', int2str(round(-1*fit))));
+disp("The identified firing angle is :"+FA)
+%disp('P_Gamma_mean sample value:');
+%disp(P_Gamma_mean.Data(1:max(5,end)));
+
+end 
