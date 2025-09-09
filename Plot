@@ -1,0 +1,28 @@
+% CFII(true, true); 
+
+% Load one HVDC file
+S = load('Temp/with_fault/HVDC_Data.mat');  
+
+% Access inverter structure
+invData = S.HVDC_Thy_Data.Inverter;  
+
+% Extract timeseries
+t_ac = invData.Vabc__pu_.Time;      % time for AC voltage
+Uac  = invData.Vabc__pu_.Data(:,1); % one phase (A-phase)
+
+t_dc = invData.Id_I.Time;           % time for DC current
+Idc  = invData.Id_I.Data;           % DC current values
+
+% Plot
+figure('Color','w');
+
+subplot(2,1,1);
+plot(t_ac, Uac, 'c','LineWidth',1.2);
+ylabel('U_{ac} / V'); title('Voltage');
+grid on;
+xlim([0,0.05])
+subplot(2,1,2);
+plot(t_dc, Idc, 'c','LineWidth',1.2);
+xlabel('Time (s)'); ylabel('I_{dc} / A'); title('Current');
+grid on;
+xlim([0.2,0.256])
