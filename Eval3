@@ -1,0 +1,174 @@
+function Eval3(x,s)
+    if x == 1
+         % Make Temp folder if not exists
+        if ~exist('Temp', 'dir')
+            mkdir('Temp');
+        end
+        if ~exist(fullfile('Temp','with_fault'), 'dir')
+            mkdir(fullfile('Temp','with_fault'));
+        end
+        if ~exist(fullfile('Temp','without_fault'), 'dir')
+            mkdir(fullfile('Temp','without_fault'));
+        end
+        % Get variables from base workspace
+        Rect_Graph_out_1 = evalin('base','Rect_Graph_out_1');
+        Graph_Inv_out_1  = evalin('base','Graph_Inv_out_1');
+
+        % Combine into single struct
+        HVDC_Thy_Data.Rectifier = Rect_Graph_out_1;
+        HVDC_Thy_Data.Inverter  = Graph_Inv_out_1;
+
+        % Save to MAT file
+        if s==0
+            save(fullfile('Temp/without_fault','HVDC_Data.mat'),'HVDC_Thy_Data');
+        else
+            save(fullfile('Temp/with_fault','HVDC_Data.mat'),'HVDC_Thy_Data');
+        end
+        fprintf('✅ Data saved to Temp/HVDC_Data.mat\n');
+
+    if x==2
+        % Make Temp folder if not exists
+        if ~exist('Temp', 'dir')
+            mkdir('Temp');
+        end
+
+        % Get variables from base workspace
+        Rect_Graph_out_2 = evalin('base','Rect_Graph_out_2');
+        Graph_Inv_out_2  = evalin('base','Graph_Inv_out_2');
+
+        % Combine into single struct
+        HVDC_JFO_Data.Rectifier = Rect_Graph_out_2;
+        HVDC_JFO_Data.Inverter  = Graph_Inv_out_2;
+
+        % Save to MAT file
+        if s==0
+             save(fullfile('Temp/without_fault','HVDC_JFO_Data.mat'),'HVDC_JFO_Data');
+        else
+             save(fullfile('Temp/with_fault','HVDC_JFO_Data.mat'),'HVDC_JFO_Data');
+        end
+      
+        fprintf('✅ Data saved to Temp/HVDC_JFO_Data.mat\n');
+    end
+
+    if x==3
+        % Make Temp folder if not exists
+        if ~exist('Temp', 'dir')
+            mkdir('Temp');
+        end
+
+        % Get variables from base workspace
+        Rect_Graph_out_3 = evalin('base','Rect_Graph_out_3');
+        Graph_Inv_out_3  = evalin('base','Graph_Inv_out_3');
+
+        % Combine into single struct
+        HVDC_SSO_Data.Rectifier = Rect_Graph_out_3;
+        HVDC_SSO_Data.Inverter  = Graph_Inv_out_3;
+
+        % Save to MAT file
+        if s==0
+             save(fullfile('Temp/without_fault','HVDC_SSO_Data.mat'),'HVDC_SSO_Data');
+        else
+             save(fullfile('Temp/with_fault','HVDC_SSO_Data.mat'),'HVDC_SSO_Data');
+        end
+
+        fprintf('✅ Data saved to Temp/HVDC_SSO_Data.mat\n');
+    end
+
+    if x==4
+        % Make Temp folder if not exists
+        if ~exist('Temp', 'dir')
+            mkdir('Temp');
+        end
+
+        % Get variables from base workspace
+        Rect_Graph_out_4 = evalin('base','Rect_Graph_out_4');
+        Graph_Inv_out_4  = evalin('base','Graph_Inv_out_4');
+
+        % Combine into single struct
+        HVDC_CFPM_Data.Rectifier = Rect_Graph_out_4;
+        HVDC_CFPM_Data.Inverter  = Graph_Inv_out_4;
+
+        % Save to MAT file
+        if s==0
+            save(fullfile('Temp/without_fault','HVDC_CFPM_Data.mat'),'HVDC_CFPM_Data');
+        else
+            save(fullfile('Temp/with_fault','HVDC_CFPM_Data.mat'),'HVDC_CFPM_Data');
+        end
+
+        fprintf('✅ Data saved to Temp/HVDC_CFPM_Data.mat\n');
+    end
+
+    if x==5
+        % Make Temp folder if not exists
+        if ~exist('Temp', 'dir')
+            mkdir('Temp');
+        end
+
+        % Get variables from base workspace
+        Rect_Graph_out_5 = evalin('base','Rect_Graph_out_5');
+        Graph_Inv_out_5 = evalin('base','Graph_Inv_out_5');
+
+        % Combine into single struct
+        HVDC_Data.Rectifier = Rect_Graph_out_5;
+        HVDC_Data.Inverter  = Graph_Inv_out_5;
+
+        % Save to MAT file
+        if s==0
+            save(fullfile('Temp/without_fault','HVDC_Data.mat'),'HVDC_Data');
+        else
+            save(fullfile('Temp/with_fault','HVDC_Data.mat'),'HVDC_Data');
+        end
+        fprintf('✅ Data saved to Temp/HVDC_Data.mat\n');
+    end
+
+    if x==6
+        % Make Temp folder if not exists
+        if ~exist('Temp', 'dir')
+            mkdir('Temp');
+        end
+
+        % Get variables from base workspace
+        Rect_Graph_out_6 = evalin('base','Rect_Graph_out_6');
+        Graph_Inv_out_6  = evalin('base','Graph_Inv_out_6');
+
+        % Combine into single struct
+        HVDC_INV_Data.Rectifier = Rect_Graph_out_6;
+        HVDC_INV_Data.Inverter  = Graph_Inv_out_6;
+
+        % Save to MAT file
+        if s==0
+            save(fullfile('Temp/without_fault','HVDC_INV_Data.mat'),'HVDC_INV_Data');
+        else
+            save(fullfile('Temp/with_fault','HVDC_INV_Data.mat'),'HVDC_INV_Data');
+        end
+
+        fprintf('✅ Data saved to Temp/HVDC_INV_Data.mat\n');
+    end
+    
+    if x==7
+        % Make Temp folder if not exists
+        if ~exist('Temp', 'dir')
+            mkdir('Temp');
+        end
+
+        % Get variables from base workspace
+        Rect_Graph_out_7 = evalin('base','Rect_Graph_out_7');
+        Graph_Inv_out_7  = evalin('base','Graph_Inv_out_7');
+
+        % Combine into single struct
+        HVDC_P_Data.Rectifier = Rect_Graph_out_7;
+        HVDC_P_Data.Inverter  = Graph_Inv_out_7;
+
+        % Save to MAT file
+        if s==0
+             save(fullfile('Temp/without_fault','HVDC_P_Data.mat'),'HVDC_P_Data');
+        else
+             save(fullfile('Temp/with_fault','HVDC_P_Data.mat'),'HVDC_P_Data');
+        end
+
+        fprintf('✅ Data saved to Temp/HVDC_P_Data.mat\n');
+    end
+
+    end
+end
+
